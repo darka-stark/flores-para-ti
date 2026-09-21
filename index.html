@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>FLOR AMARILLA :)</title>
+<style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --gold: #f6c453;
+        --gold-light: #ffe7a3;
+        --cream: #fff8e8;
+        --brown: #5b3215;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+        background:
+          radial-gradient(circle at 15% 85%, rgba(255, 190, 40, .45), transparent 25%),
+          radial-gradient(circle at 85% 20%, rgba(255, 220, 120, .30), transparent 28%),
+          linear-gradient(145deg, #1a1713 0%, #5a3a20 45%, #c88a24 100%);
+        font-family: "Poppins", sans-serif;
+      }
+
+      /* Luz cálida de fondo */
+      body::before {
+        content: "";
+        position: absolute;
+        inset: -20%;
+        background:
+          radial-gradient(circle at 20% 70%, rgba(255, 193, 7, .22) 0 3%, transparent 4%),
+          radial-gradient(circle at 80% 35%, rgba(255, 231, 150, .20) 0 2%, transparent 3%);
+        filter: blur(12px);
+        animation: glow 7s ease-in-out infinite alternate;
+      }
+
+      /* Pétalos decorativos */
+      body::after {
+        content: "🌻  ✦  🌻  ✦  🌻";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 7%;
+        text-align: center;
+        font-size: 42px;
+        letter-spacing: 28px;
+        opacity: .18;
+        filter: blur(1px);
+        pointer-events: none;
+      }
+
+      .container {
+        width: min(360px, 88vw);
+        padding: 32px 28px 30px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        color: var(--brown);
+        background: rgba(255, 248, 232, .94);
+        border: 1px solid rgba(255, 255, 255, .75);
+        border-radius: 28px;
+        box-shadow:
+          0 25px 70px rgba(0, 0, 0, .45),
+          inset 0 1px 0 rgba(255,255,255,.8);
+        backdrop-filter: blur(10px);
+        animation: cardIn .8s ease-out both;
+      }
+
+      .container::before {
+        content: "🌻";
+        display: block;
+        font-size: 42px;
+        margin-bottom: 8px;
+        filter: drop-shadow(0 5px 8px rgba(0,0,0,.18));
+      }
+
+      .container h2 {
+        font-family: Georgia, serif;
+        font-size: clamp(1.55rem, 5vw, 2rem);
+        line-height: 1.12;
+        font-weight: 700;
+        color: #4b2a13;
+      }
+
+      .subtitle {
+        margin: 12px auto 8px;
+        max-width: 280px;
+        font-size: .95rem;
+        line-height: 1.5;
+        color: #80613d;
+      }
+
+      .input-display {
+        margin: 18px 0 20px;
+        min-height: 34px;
+        font-size: 27px;
+        letter-spacing: 9px;
+        color: #d69a16;
+        font-weight: 600;
+      }
+
+      .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 13px;
+      }
+
+      .keypad button {
+        width: 64px;
+        height: 64px;
+        margin: auto;
+        border: none;
+        border-radius: 50%;
+        outline: none;
+        cursor: pointer;
+        font-size: 23px;
+        font-weight: 500;
+        color: #5b3215;
+        background: linear-gradient(145deg, #ffe8a3, #f3c95d);
+        box-shadow:
+          0 7px 14px rgba(91, 50, 21, .20),
+          inset 0 1px 0 rgba(255,255,255,.85);
+        transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .keypad button:hover {
+        transform: translateY(-3px) scale(1.04);
+        box-shadow: 0 11px 20px rgba(91, 50, 21, .28);
+        filter: brightness(1.04);
+      }
+
+      .keypad button:active {
+        transform: scale(.94);
+      }
+
+      .keypad button:last-child {
+        grid-column: 2 / 3;
+      }
+
+      .love-note {
+        margin-top: 23px;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: .92rem;
+        color: #7b542c;
+      }
+
+      .love-note span {
+        display: block;
+        margin-top: 5px;
+        color: #d69a16;
+        font-size: 18px;
+      }
+
+      .petal {
+        position: absolute;
+        font-size: 22px;
+        opacity: .45;
+        animation: floatPetal linear infinite;
+        pointer-events: none;
+      }
+
+      .p1 { left: 8%; top: 20%; animation-duration: 9s; }
+      .p2 { right: 9%; top: 28%; animation-duration: 11s; animation-delay: 1s; }
+      .p3 { left: 16%; bottom: 18%; animation-duration: 10s; animation-delay: 2s; }
+      .p4 { right: 15%; bottom: 15%; animation-duration: 12s; animation-delay: 3s; }
+
+      @keyframes cardIn {
+        from { opacity: 0; transform: translateY(30px) scale(.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      @keyframes glow {
+        from { transform: scale(1) rotate(0deg); }
+        to { transform: scale(1.08) rotate(2deg); }
+      }
+
+      @keyframes floatPetal {
+        0% { transform: translateY(30px) rotate(0deg); opacity: 0; }
+        20% { opacity: .5; }
+        80% { opacity: .5; }
+        100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
+      }
+
+      @media (max-width: 420px) {
+        .container {
+          padding: 27px 20px 25px;
+        }
+
+        .keypad {
+          gap: 10px;
+        }
+
+        .keypad button {
+          width: 58px;
+          height: 58px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="petal p1">🌻</div>
+    <div class="petal p2">🌼</div>
+    <div class="petal p3">🌻</div>
+    <div class="petal p4">🌼</div>
+
+    <div class="container">
+      <h2>Ingrese la contraseña</h2>
+
+      <p class="subtitle">
+        Hay cosas bonitas que solo tú puedes descubrir... 💛
+      </p>
+
+      <div class="input-display" id="inputDisplay">••••</div>
+
+      <div class="keypad">
+        <button class="key" onclick="enterDigit('1')">1</button>
+        <button class="key" onclick="enterDigit('2')">2</button>
+        <button class="key" onclick="enterDigit('3')">3</button>
+        <button class="key" onclick="enterDigit('4')">4</button>
+        <button class="key" onclick="enterDigit('5')">5</button>
+        <button class="key" onclick="enterDigit('6')">6</button>
+        <button class="key" onclick="enterDigit('7')">7</button>
+        <button class="key" onclick="enterDigit('9')">9</button>
+        <button class="key" onclick="enterDigit('8')">8</button>
+        <button class="key" onclick="enterDigit('0')">0</button>
+      </div>
+
+      <div class="love-note">
+        Gracias por ser mi lugar feliz
+        <span>♥</span>
+      </div>
+    </div>
+
+    <script>
+      const correctPassword = "2512";
+      const display = document.getElementById("inputDisplay");
+      let input = "";
+
+      function enterDigit(digit) {
+        if (input.length < 4) {
+          input += digit;
+        }
+
+        display.textContent = input.padEnd(4, "•");
+
+        if (input.length === 4) {
+          if (input === correctPassword) {
+            window.location.href = "flower.html";
+          } else {
+            alert("Contraseña incorrecta, intenta de nuevo");
+            input = "";
+            display.textContent = "••••";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
