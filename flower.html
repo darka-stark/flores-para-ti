@@ -350,7 +350,133 @@
           font-size: 14px;
         }
       }
-    </style>
+
+
+      /* ===== CARTA ROMÁNTICA ===== */
+      .letter-btn {
+        padding: 14px 26px;
+        margin: 0 0 18px;
+        font-family: Georgia, serif;
+        font-size: 17px;
+        font-weight: 600;
+        color: #5a3519;
+        background: linear-gradient(135deg, #fff8df, #f4d47b);
+        border: 1px solid rgba(255,255,255,.7);
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 8px 20px rgba(0,0,0,.28);
+        position: relative;
+        z-index: 1000;
+        transition: transform .25s ease, box-shadow .25s ease;
+      }
+      .letter-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(0,0,0,.35); }
+
+      .letter-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 5000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(20, 10, 18, .78);
+        backdrop-filter: blur(7px);
+        overflow-y: auto;
+      }
+      .letter-overlay.show { display: flex; animation: fadeLetter .35s ease; }
+      @keyframes fadeLetter { from { opacity: 0; } to { opacity: 1; } }
+
+      .letter-paper {
+        width: min(720px, 100%);
+        max-height: 92vh;
+        overflow-y: auto;
+        padding: 38px clamp(24px, 6vw, 58px) 45px;
+        border-radius: 22px;
+        color: #4c3428;
+        background: linear-gradient(135deg, #fffdf5, #fff3d0);
+        border: 1px solid rgba(181,132,54,.45);
+        box-shadow: 0 25px 75px rgba(0,0,0,.5);
+        transform: translateY(18px) scale(.97);
+        animation: paperIn .5s cubic-bezier(.2,.8,.2,1) forwards;
+        position: relative;
+      }
+      @keyframes paperIn { to { transform: translateY(0) scale(1); } }
+      .letter-paper::before, .letter-paper::after {
+        content: "🌻";
+        position: absolute;
+        font-size: 26px;
+        opacity: .75;
+      }
+      .letter-paper::before { top: 13px; left: 15px; }
+      .letter-paper::after { bottom: 13px; right: 15px; }
+
+      .close-letter {
+        position: sticky;
+        float: right;
+        top: 0;
+        width: 38px;
+        height: 38px;
+        border: 0;
+        border-radius: 50%;
+        background: #dba936;
+        color: white;
+        font-size: 24px;
+        line-height: 1;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .letter-title {
+        clear: both;
+        text-align: center;
+        font-family: Georgia, serif;
+        font-size: clamp(35px, 7vw, 55px);
+        font-weight: 400;
+        font-style: italic;
+        color: #8a5a1f;
+        margin: 12px 0 25px;
+      }
+      .letter-body {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        line-height: 1.82;
+      }
+      .letter-body p { margin: 0 0 17px; }
+      .letter-body .center { text-align: center; }
+      .letter-body .strong { font-weight: 700; color: #80511c; }
+      .letter-body .big { font-size: 20px; font-weight: 700; }
+      .signature {
+        margin-top: 25px;
+        text-align: right;
+        font-family: Georgia, serif;
+        font-style: italic;
+        font-size: 30px;
+        color: #8a5a1f;
+      }
+      .final-flower { text-align: center; margin-top: 25px; font-size: 48px; }
+      .final-phrase { text-align: center; margin-top: 3px; font-family: Georgia, serif; font-style: italic; font-size: 25px; color: #8a5a1f; }
+
+      @media (max-width: 600px) {
+        .letter-paper { max-height: 94vh; padding: 28px 22px 38px; border-radius: 18px; }
+        .letter-body { font-size: 16px; line-height: 1.75; }
+      }
+
+    
+
+      #openLetter.letter-reveal {
+        animation: letterReveal .7s ease forwards;
+      }
+
+      @keyframes letterReveal {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+</style>
   </head>
   <body>
     <audio id="id_audio" src="close to you.mp3" preload="auto"></audio>
@@ -409,24 +535,105 @@
     <div class="light light-11"></div>
     <div class="light light-12"></div>
 
-    <button class="flower-btn">CLICK AQUÍ 💛</button>
+    <button class="flower-btn" id="playSong">🎵 ESCUCHA ESTO...</button>
+    <button class="letter-btn" id="openLetter" style="display:none;">💌 HAY ALGO MÁS PARA TI</button>
 
     <div class="bottom-message">
       La vida es más bonita contigo ❤️
     </div>
 
+
+
+    <div class="letter-overlay" id="letterOverlay" aria-hidden="true">
+      <article class="letter-paper">
+        <button class="close-letter" id="closeLetter" aria-label="Cerrar carta">×</button>
+        <h2 class="letter-title">Para el amor de mi vida</h2>
+        <div class="letter-body">
+          <p><strong>Hola, mi amor.</strong></p>
+          <p>Se que hoy es un día para celebrar, pero también es un día que me hace pensar en todo lo que hemos vivido juntos.</p>
+          <p>Sabes, si pudiera regresar al pasado y alguien me dijera que tú serías la mujer con la que compartiría mi vida, probablemente no lo creería. Porque eres una mujer maravillosa.</p>
+          <p>Recuerdo nuestro tiempo de prepa, todas las cosas que vivimos y lo mucho que nos divertimos. Aunque hoy solo sean recuerdos, cuando pienso en ellos me hacen muy feliz. Y me hacen darme cuenta de cuánto tiempo llevamos caminando juntos.</p>
+          <p><strong>Te amo demasiado.</strong></p>
+          <p>Aunque hay días en los que quizá no lo parece. El trabajo, pensar en nuestro bebé y en cómo darles un mejor futuro a ustedes me drena mucha energía. Pero quiero que sepas algo: <span class="strong">ustedes nunca son una carga para mí. Jamás.</span></p>
+          <p class="center big">Son mi motivo de cada día.<br>Son mi razón para levantarme cada mañana y seguir adelante.</p>
+          <p>Todo lo que hago es pensando en que ustedes estén bien.</p>
+          <p>Te amo. Amo cada parte de ti.</p>
+          <p>Sabes que admiro tu belleza. Esos ojos tan hermosos que me encantan y de los que nunca me cansaría de hablarte.</p>
+          <p>Hay días en los que simplemente te observo y me ganan los nervios. Sí, todavía me pongo nervioso contigo.</p>
+          <p>Y siempre que recuerdo nuestro primer beso en tu casa, vuelvo a sentir algo parecido a lo de aquel momento. Desde ese día solo quería estar contigo, porque por fin mi corazón y mi mente estaban de acuerdo en algo:</p>
+          <p class="center big">Tú eras la persona con la que quería estar.</p>
+          <p>Te agradezco muchísimo por permitirme estar a tu lado.</p>
+          <p>Te agradezco por darme la oportunidad de ser padre. No sabes cuánto significa para mí.</p>
+          <p>Y también te agradezco que, aun cuando yo no tenía nada, decidieras quedarte a mi lado.</p>
+          <p>Gracias por esta gran familia.</p>
+          <p>Gracias por todos los momentos bonitos que me has hecho vivir junto a ti y junto a tu familia.</p>
+          <p class="center big">Tú y Frijolito significan todo para mí.</p>
+          <p class="center">Son mi familia.<br>Son mi vida.<br>Son mi todo.</p>
+          <p>Anhelo con toda mi alma poder criar a nuestro hijo de la mejor manera. Sé que siempre vamos a buscar lo mejor para él, pero también para nosotros.</p>
+          <p>Deseo llegar a viejo contigo.</p>
+          <p>Quiero algún día mirar hacia atrás y poder decir:</p>
+          <p class="center big">“Sí se pudo.”</p>
+          <p>Que a pesar de todas las adversidades, de los días difíciles, del cansancio y de todo lo que la vida nos ponga enfrente, <span class="strong">logramos llegar hasta ese momento juntos.</span></p>
+          <p>Y si algún día llegamos a ser viejitos, quiero seguir mirándote y recordar a aquella mujer de la que me enamoré.</p>
+          <p class="center big">Te amo. ❤️</p>
+          <p>Sé que este detalle quizá no sea mucho, y sé que las flores algún día se marchitan...</p>
+          <p class="center big">Pero recuerda algo: esta flor jamás se marchitará. 🌻</p>
+          <p>Porque cada vez que quieras verla, estará aquí para recordarte algo que nunca quiero que olvides:</p>
+          <p class="center big">Lo mucho que te amo.</p>
+          <div class="signature">Con todo mi amor,<br>tu esposo. ❤️</div>
+          <div class="final-flower">🌻</div>
+          <div class="final-phrase">Esta flor jamás se marchita.</div>
+        </div>
+      </article>
+    </div>
+
     <script>
-      const flowerBtn = document.querySelector(".flower-btn");
+      const openLetter = document.getElementById("openLetter");
+      const closeLetter = document.getElementById("closeLetter");
+      const letterOverlay = document.getElementById("letterOverlay");
+
+      openLetter.onclick = () => {
+        letterOverlay.classList.add("show");
+        letterOverlay.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      };
+
+      function closeLetterPanel() {
+        letterOverlay.classList.remove("show");
+        letterOverlay.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "hidden";
+      }
+
+      closeLetter.onclick = closeLetterPanel;
+      letterOverlay.onclick = (event) => {
+        if (event.target === letterOverlay) closeLetterPanel();
+      };
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeLetterPanel();
+      });
+
+      const flowerBtn = document.getElementById("playSong");
       const audio = document.getElementById("id_audio");
 
-      flowerBtn.onclick = () => {
+      flowerBtn.onclick = async () => {
         audio.volume = 0.8;
         audio.currentTime = 0;
-        audio.play().catch(error => {
-          console.log("El navegador bloqueó el audio:", error);
-        });
 
-        flowerBtn.textContent = "PARA TI ❤️";
+        try {
+          await audio.play();
+
+          flowerBtn.textContent = "🎵 REPRODUCIENDO...";
+
+          // La carta aparece únicamente después de iniciar la canción.
+          setTimeout(() => {
+            openLetter.style.display = "inline-block";
+            openLetter.classList.add("letter-reveal");
+          }, 900);
+
+        } catch (error) {
+          console.log("El navegador bloqueó el audio:", error);
+          flowerBtn.textContent = "🎵 TOCA AQUÍ PARA ESCUCHAR";
+        }
       };
     </script>
   </body>
